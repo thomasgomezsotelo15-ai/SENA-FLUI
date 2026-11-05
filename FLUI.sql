@@ -245,7 +245,108 @@ INSERT INTO Gasto VALUES
 (10, 110, 'Transporte de juguetes', 40000, '2025-10-10 17:00:00');
 
 
+SELECT *
+FROM Gasto WHERE valor BETWEEN 40000 AND 80000
 
+
+SELECT 
+p.Stock_Minimo,i.Ultima_Actualizacion
+FROM Producto p
+INNER JOIN Inventario i ON p.Id_Producto = i.Id_Producto;
+
+SELECT
+c.Fecha_Compra,
+f.Fecha,
+f,Total
+FROM Compra c
+INNER JOIN Factura f ON c.Id_Compra = f.Id_Compra
+WHERE Fecha BETWEEN '2025-07-15' AND '2025-10-10';
+
+SELECT 
+u.Contraseña_Usuario,n.Direccion,n
+FROM Usuario u 
+INNER JOIN Negocio n ON u.Id_Usuario = n.Id_Usuario
+WHERE Direccion BETWEEN 'Cra 7A' AND 'Cra 7e';
+
+
+INSERT INTO Venta_del_producto (Id_Venta, Id_Producto) VALUES
+(1, 1001),
+(2, 1002),
+(3, 1003),
+(4, 1004),
+(5, 1005),
+(6, 1006),
+(7, 1007),
+(8, 1008),
+(9, 1009),
+(10, 1010);
+
+
+INSERT INTO Producto_con_cliente (Id_Producto, Id_Cliente) VALUES
+(1001, 10),
+(1002, 11),
+(1003, 12),
+(1004, 13),
+(1005, 14),
+(1006, 15),
+(1007, 16),
+(1008, 17),
+(1009, 18),
+(1010, 19);
+
+
+INSERT INTO Surtir_el_producto (Id_Producto, Id_Proovedor) VALUES
+(1001, 1),
+(1002, 2),
+(1003, 3),
+(1004, 4),
+(1005, 5),
+(1006, 6),
+(1007, 7),
+(1008, 8),
+(1009, 9),
+(1010, 10);
+
+SELECT 
+p.precio_venta,
+p.unidad_medida,
+v.fecha,
+v.total_venta,
+v.metodo_pago
+FROM venta v
+INNER JOIN venta_del_producto vdp ON v.id_venta = vdp.id_venta
+INNER JOIN producto p ON  p.id_producto = vdp.id_producto;
+
+
+SELECT 
+p.precio_venta,
+p.stock_minimo,
+pr.nombre,
+pr.direccion
+FROM producto p
+INNER JOIN surtir_el_producto sep ON p.id_producto = sep.id_producto
+INNER JOIN proovedor pr ON pr.id_proovedor = sep.id_proovedor;
+
+SELECT
+u.nombre,
+n.direccion
+FROM usuario u
+FULL JOIN negocio n ON u.id_usuario = n.id_usuario
+
+
+SELECT 
+u.nombre,
+n.direccion
+FROM usuario u LEFT JOIN negocio n ON u.id_usuario = n.id_usuario
+
+
+ALTER TABLE proovedor
+RENAME COLUMN id_proovedor TO id_proveedor;
+
+ALTER TABLE proovedor
+RENAME TO Proveedor;
+
+SELECT * FROM proveedor;
 
 ALTER TABLE venta
 ADD COLUMN producto_vendidos INT;
@@ -271,16 +372,42 @@ WHEN id_venta = 9 THEN 50
 WHEN id_venta = 10 THEN 35
 END;
 
+SELECT * FROM venta;
+
+INSERT INTO venta (id_venta, id_negocio, id_cliente, fecha, total_venta, metodo_pago, productos_vendidos)
+VALUES (11, 105, 16, '2025-10-10 08:30:00', 45000, 'Efectivo', 5);
 
 
+ALTER TABLE venta_del_producto
+DROP CONSTRAINT venta_del_producto_pkey;
 
+ALTER TABLE venta_del_producto
+ADD CONSTRAINT pk_venta_producto
+PRIMARY KEY (id_venta, id_producto);
 
+ALTER TABLE producto_con_cliente
+DROP CONSTRAINT producto_con_cliente_pkey;
 
+ALTER TABLE producto_con_cliente
+ADD CONSTRAINT pk_producto_cliente
+PRIMARY KEY (id_producto, id_cliente);
 
+ALTER TABLE surtir_el_producto
+DROP CONSTRAINT surtir_el_producto_pkey;
 
+ALTER TABLE surtir_el_producto
+ADD CONSTRAINT pk_producto_proveedor
+PRIMARY KEY (id_producto, id_proveedor);
 
+SELECT * FROM proveedor;
 
+ALTER TABLE compra
+RENAME COLUMN Id_proovedor TO Id_proveedor;
 
+ALTER TABLE surtir_el_producto
+RENAME COLUMN Id_proovedor To Id_proveedor;
+
+SELECT * FROM compra;
 
 
 
