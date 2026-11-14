@@ -1,10 +1,10 @@
 import pandas as pd
 import psycopg2
 import sklearn
-
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
+import joblib   
 
 print("Conectando a la base de datos PostgreSQL...")
 
@@ -15,8 +15,6 @@ conexion = psycopg2.connect(
         password="1234",
         port="5432"
 )
-
-
 
 
 query = """
@@ -61,6 +59,8 @@ print(f"Precisión del modelo: {precision * 100:.2f}%")
 
 print(f"Producto más vendido: {producto_mas_vendido['nombre']}")
 
+joblib.dump(modelo, 'modelo_FLUI_IA.pkl')
+print("Modelo guardado con éxito en 'modelo_FLUI_IA.pkl'.")
 
 
 conexion.close()
